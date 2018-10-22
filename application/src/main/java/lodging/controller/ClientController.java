@@ -43,4 +43,9 @@ public class ClientController {
         clientRepository.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("/teste")
+    public String teste() {
+        return "HELLO WORLD";
+    }
 }
