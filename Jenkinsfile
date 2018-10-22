@@ -1,34 +1,8 @@
-node {
+def maven = docker.image('maven:3.5.0-jdk-8');
 
-  try {
+  maven.pull()
 
-    buildWithCompose {
-      composeFileName = "docker-build-mvn.yml"
-      composeService = "service"
-      composeProjectName = "teste"
-    }
+    maven.inside("--volume ${WORKSPACE}/services:/home/application --volume ${MVN_CACHE}:${MVN_CACHE}"){
+    sh "cd /home/application ; mvn -B -Dmaven.repo.local=${MVN_CACHE} -DskipTests=true -U clean install -Denv=service"
 
-    buildDockerContainer {
-      dockerRepositoryName = "teste"
-      dockerFileLocation = "services/services"
-    }
-
-    deployDockerService {
-      dockerRepositoryName = "teste"
-      dockerSwarmStack = "teste"
-      dockerService = "service"
-    }
-
-    tagRelease {
-      gitRepo = "github.com/pibous/teste"
-    }
-
-  } catch (e) {
-
-      notifyBuildStatus {
-        buildStatus = "FAILED"
-      }
-      throw e
   }
-
-}
