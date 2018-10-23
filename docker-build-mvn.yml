@@ -1,9 +1,0 @@
-version: '2'
-services:
-  service:
-    image: maven:3.5.0-jdk-8
-    volumes:
-      - .:/home/application
-      - /data/mvn-repository/:/data/mvn-repository
-    working_dir: /home/application/services
-    command: mvn -B -Dmaven.repo.local=/data/mvn-repository clean install -U -Denv=service -DskipTests=true
