@@ -1,0 +1,10 @@
+version: '2'
+services:
+  service:
+    image: maven:3.5.0-jdk-8
+    volumes:
+      - .:/home/dev/teste
+      - /data/mvn-repository/:/data/mvn-repository
+    working_dir: /home/dev/teste
+    command: mvn -B -Dmaven.repo.local=/data/mvn-repository clean install -U
+
